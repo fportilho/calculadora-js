@@ -1,0 +1,290 @@
+<html>
+	<head>
+		<title>Calculadora</title>
+
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <style>
+      .calculadora {
+        margin-top: 40px;
+        border: solid 1px #000;
+        padding: 20px;
+        background-color: #2E2E2E;
+        border-radius: 10px;
+        box-shadow: 1px 1px 5px #000;
+      }
+
+      .btn {
+        width: 60px;
+        height: 50px;
+        margin: 5px;
+        box-shadow: 1px 1px 1px #000;
+      }
+
+      .num {
+        background-color:darkred;
+      }
+
+      .clear {
+        width: 130px;
+      }
+
+      .enter {
+        height: 110px;
+      }
+
+      .zero {
+        width: 130px;
+      }
+
+      .visor {
+        text-align: right;
+        font-size: 20px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        border: solid 1px #000;
+        box-shadow: 1px 1px 1px #000;
+      }
+
+      .resultado {
+        text-align: right;
+        font-size: 15px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        border: solid 1px #000;
+        box-shadow: 1px 1px 1px #000;
+      }
+    </style>
+
+    <script>
+    
+    </script>
+	</head>
+
+  <body style="background: #D9D9D9">
+
+    <div class="container">
+      <div class="row">
+        <div class="col d-flex justify-content-center">
+          <br />
+
+          <div class="calculadora">
+            <input id="visor" type="text" class="form-control visor" placeholder="0" disabled="disabled"/>
+            <input id="resultado" type="text" class="form-control resultado" placeholder="" readonly>
+            
+            <div class="row">
+              <button onclick="calcular('acao','c')" type="button" class="btn btn-dark btn-lg clear font-weight-light">C</button>
+              <button onclick="calcular('acao','/')" type="button" class="btn btn-dark btn-lg font-weight-light">/</button>
+              <button onclick="calcular('acao','*')" type="button" class="btn btn-dark btn-lg font-weight-light">x</button>
+            </div>
+
+            <div class="row">
+              <button onclick="calcular('valor','7')" type="button" class="btn btn-dark btn-lg font-weight-bold num">7</button>
+              <button onclick="calcular('valor','8')" type="button" class="btn btn-dark btn-lg font-weight-bold num">8</button>
+              <button onclick="calcular('valor','9')" type="button" class="btn btn-dark btn-lg font-weight-bold num">9</button>
+              <button onclick="calcular('acao','-')" type="button" class="btn btn-dark btn-lg font-weight-light">-</button>
+            </div>
+            
+            <div class="row">
+              <button onclick="calcular('valor','4')" type="button" class="btn btn-dark btn-lg font-weight-bold num">4</button>
+              <button onclick="calcular('valor','5')" type="button" class="btn btn-dark btn-lg font-weight-bold num">5</button>
+              <button onclick="calcular('valor','6')" type="button" class="btn btn-dark btn-lg font-weight-bold num">6</button>
+              <button onclick="calcular('acao','+')" type="button" class="btn btn-dark btn-lg font-weight-light">+</button>
+            </div>
+
+            <div class="row">
+              <button onclick="calcular('valor','1')" type="button" class="btn btn-dark btn-lg font-weight-bold num">1</button>
+              <button onclick="calcular('valor','2')" type="button" class="btn btn-dark btn-lg font-weight-bold num">2</button>
+              <button onclick="calcular('valor','3')" type="button" class="btn btn-dark btn-lg font-weight-bold num">3</button>
+              <button onclick="calcular('acao','=')" type="button" class="btn btn-dark btn-lg enter">=</button>
+            </div>
+
+            <div class="row" style="margin-top: -60px">
+              <button onclick="calcular('valor','0')" type="button" class="btn btn-dark zero btn-lg font-weight-bold num">0</button>
+              <button onclick="calcular('acao','.')" type="button" class="btn btn-dark btn-lg font-weight-light">.</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div> 
+    
+    <script>
+
+      var visorArray = []
+      var ponto = false
+      document.getElementById('visor').value = ""
+
+      function calcular(tipo, valor)
+      {
+        if (tipo == 'valor')
+        {
+          document.getElementById('visor').value += valor.toString()
+          visorArray.push(valor)
+          resultadoParcial()
+        }
+        else
+        {
+          if (valor == 'c')
+          {
+            document.getElementById('visor').value = ""
+            document.getElementById('resultado').value = ""
+            visorArray = []
+            ponto = false
+          }
+          else if (valor == '/')
+          {
+            clickDivisao()
+            resultadoParcial()
+          }
+          else if (valor == '*')
+          {
+            clickMultiplicacao()
+            resultadoParcial()
+          }
+          else if (valor == '-')
+          {
+            clickSubtracao()
+            resultadoParcial()
+          }
+          else if (valor == '+')
+          {
+            clickAdicao()
+            resultadoParcial()
+          }
+          else if (valor == '=')
+          {
+            clickIgual()
+          }
+          else if (valor == '.')
+          {
+            clickPonto()
+          }
+        }
+      }
+
+      function clickDivisao()
+      {
+        if (document.getElementById('visor').value == "")
+        {
+          document.getElementById('visor').value = '0 / '
+          visorArray.push(0)
+          visorArray.push('/')
+        }
+        else
+        {
+          if (isNaN(visorArray[visorArray.length - 1]) == false)
+          {
+            document.getElementById('visor').value += ' / '
+            visorArray.push('/')
+            ponto = false
+          }
+        }
+      }
+
+      function clickMultiplicacao()
+      {
+        if (document.getElementById('visor').value == "")
+        {
+          document.getElementById('visor').value = '0 * '
+          visorArray.push(0)
+          visorArray.push('*')
+        }
+        else
+        {
+          if (isNaN(visorArray[visorArray.length - 1]) == false)
+          {
+            document.getElementById('visor').value += ' * '
+            visorArray.push('*')
+            ponto = false
+          }
+        }
+      }
+
+      function clickSubtracao()
+      {
+        if (document.getElementById('visor').value == "")
+        {
+          document.getElementById('visor').value = '0 - '
+          visorArray.push(0)
+          visorArray.push('-')
+          ponto = false
+        }
+        else
+        {
+          if (isNaN(visorArray[visorArray.length - 1]) == false)
+          {
+            document.getElementById('visor').value += ' - '
+            visorArray.push('-')
+            ponto = false
+          }
+        }
+      }
+
+      function clickAdicao()
+      {
+        if (document.getElementById('visor').value == "")
+        {
+          document.getElementById('visor').value = '0 + '
+          visorArray.push(0)
+          visorArray.push('+')
+          ponto = false
+        }
+        else
+        {
+          if (isNaN(visorArray[visorArray.length - 1]) == false)
+          {
+            document.getElementById('visor').value += ' + '
+            visorArray.push('+')
+            ponto = false
+          }
+        }
+      }
+
+      function clickIgual()
+      {
+        if (document.getElementById('resultado').value != "")
+        {
+          document.getElementById('visor').value = document.getElementById('resultado').value
+          document.getElementById('resultado').value = ""
+          visorArray = [document.getElementById('visor').value]
+          console.log(typeof(document.getElementById('visor').value))
+        }
+
+        var verificaPonto = document.getElementById('visor').value.split("")
+        if (verificaPonto.includes("."))
+        {
+          ponto = true
+        }
+        else
+        {
+          ponto = false
+        }
+      }
+
+      function clickPonto()
+      {
+        if (ponto == false && isNaN(visorArray[visorArray.length - 1]) == false)
+        {
+          document.getElementById('visor').value += '.'
+          visorArray.push('.')
+          ponto = true
+        }
+      }
+
+      function resultadoParcial()
+      {
+        console.log('oi')
+        console.log(visorArray)  
+        
+        if (isNaN(visorArray[visorArray.length - 1]) == false)
+        {
+          document.getElementById('resultado').value = eval(document.getElementById('visor').value)
+        }
+      }
+      
+    </script>
+
+  </body>	
+</html>
